@@ -1,0 +1,68 @@
+<!-- lobby.component.html -->
+<div class="lobby-container">
+  <header class="lobby-header">
+    <h1>♟ Chess Lobby</h1>
+    <div class="user-info">
+      <span class="username">{{ currentUser?.username }}</span>
+      <button class="logout-btn" (click)="logout()">Logout</button>
+    </div>
+  </header>
+
+  <div class="lobby-content">
+    <!-- Invitations reçues -->
+    <section class="invitations-section" *ngIf="pendingInvitations.length > 0">
+      <h2>📩 Pending Invitations</h2>
+      <div class="invitation-list">
+        <div class="invitation-card" *ngFor="let invitation of pendingInvitations">
+          <div class="invitation-info">
+            <strong>{{ invitation.sender.username }}</strong> invited you to play!
+          </div>
+          <div class="invitation-actions">
+            <button class="accept-btn" (click)="acceptInvitation(invitation)">Accept</button>
+            <button class="decline-btn" (click)="declineInvitation(invitation)">Decline</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Invitations envoyées -->
+    <section class="sent-invitations" *ngIf="sentInvitations.length > 0">
+      <h3>⏳ Invitations Sent</h3>
+      <div class="sent-list">
+        <div class="sent-item" *ngFor="let invitation of sentInvitations">
+          Waiting for <strong>{{ invitation.receiver.username }}</strong> to respond...
+        </div>
+      </div>
+    </section>
+
+    <!-- Liste des joueurs en ligne -->
+    <section class="players-section">
+      <h2>🟢 Online Players ({{ onlineUsers.length }})</h2>
+
+      <div class="players-list" *ngIf="onlineUsers.length > 0">
+        <div class="player-card" *ngFor="let player of onlineUsers">
+          <div class="player-info">
+            <div class="player-avatar">{{ player.username.charAt(0).toUpperCase() }}</div>
+            <div class="player-details">
+              <div class="player-name">{{ player.username }}</div>
+              <div class="player-status" [class]="player.status.toLowerCase()">
+                {{ player.status }}
+              </div>
+            </div>
+          </div>
+          <button
+            class="invite-btn"
+            (click)="invitePlayer(player.id)"
+            [disabled]="player.status === 'IN_GAME' || hasSentInvitation(player.id)">
+            {{ hasSentInvitation(player.id) ? 'Invited' : 'Invite' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="no-players" *ngIf="onlineUsers.length === 0">
+        <p>No other players online at the moment.</p>
+        <p>Share the app with your friends!</p>
+      </div>
+    </section>
+  </div>
+</div>

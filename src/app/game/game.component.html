@@ -1,0 +1,79 @@
+<!-- game.component.html -->
+<div class="game-container">
+  <header class="game-header">
+    <button class="back-btn" (click)="backToLobby()">← Back to Lobby</button>
+    <h1>♟ Chess Game</h1>
+    <button class="forfeit-btn" (click)="forfeit()">Forfeit</button>
+  </header>
+
+  <div class="game-content" *ngIf="game">
+    <!-- Info du jeu -->
+    <aside class="game-sidebar">
+      <div class="players-info">
+        <div class="player-box" [class.active]="game.currentTurn === 'WHITE'">
+          <div class="player-color white">⚪</div>
+          <div class="player-name">{{ game.whitePlayer.username }}</div>
+          <div class="player-indicator" *ngIf="myColor === 'WHITE'">(You)</div>
+        </div>
+
+        <div class="turn-indicator">
+          {{ isMyTurn ? 'Your Turn!' : 'Opponent\'s Turn' }}
+        </div>
+
+        <div class="player-box" [class.active]="game.currentTurn === 'BLACK'">
+          <div class="player-color black">⚫</div>
+          <div class="player-name">{{ game.blackPlayer.username }}</div>
+          <div class="player-indicator" *ngIf="myColor === 'BLACK'">(You)</div>
+        </div>
+      </div>
+
+      <!-- Historique des coups -->
+      <div class="move-history">
+        <h3>Move History</h3>
+        <div class="history-list">
+          <div class="history-item" *ngFor="let move of moveHistory">
+            <span class="move-number">{{ move.moveNumber }}.</span>
+            <span class="move-player">{{ move.playerName }}:</span>
+            <span class="move-notation">{{ move.notation }}</span>
+            <span class="move-check" *ngIf="move.isCheck">✓</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statut du jeu -->
+      <div class="game-status" *ngIf="game.status !== 'IN_PROGRESS'">
+        <h3>Game Over!</h3>
+        <p *ngIf="game.winner">Winner: {{ game.winner.username }}</p>
+        <p *ngIf="!game.winner">Draw!</p>
+      </div>
+    </aside>
+
+    <!-- Plateau d'échecs -->
+    <main class="chess-board-container">
+      <div class="chess-board">
+        <div class="board-row" *ngFor="let row of board; let i = index">
+          <div
+            class="chess-square"
+            *ngFor="let square of row; let j = index"
+            [class.light]="square.isLight"
+            [class.dark]="!square.isLight"
+            [class.selected]="isSquareSelected(square)"
+            [class.disabled]="!isMyTurn"
+            (click)="onSquareClick(square)">
+
+            <div class="piece" *ngIf="square.piece">
+              {{ getPieceSymbol(square.piece) }}
+            </div>
+
+            <div class="square-label" *ngIf="i === 7">
+              {{ square.file }}
+            </div>
+            <div class="square-label-rank" *ngIf="j === 0">
+              {{ square.rank }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
