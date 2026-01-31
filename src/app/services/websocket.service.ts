@@ -29,7 +29,7 @@ export class WebSocketService {
   constructor() {}
 
   connect(userId: number): void {
-    const socket = new SockJS('http://localhost:8080/ws');
+    const socket = new SockJS('http://localhost:8088/ws');
 
     this.stompClient = new Client({
       webSocketFactory: () => socket as any,

@@ -13,7 +13,7 @@ import {MoveHistory} from "../models/move-history/move-history.module";
   providedIn: 'root'
 })
 export class GameService {
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = 'http://localhost:8088/api';
   private currentGameSubject = new BehaviorSubject<Game | null>(null);
   public currentGame$ = this.currentGameSubject.asObservable();
 
