@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import * as SockJS from 'sockjs-client';
+import SockJS from 'sockjs-client';
 import { Client, IMessage } from '@stomp/stompjs';
 import {GameInvitation} from "../models/game-invitation/game-invitation.module";
 import {Game} from "../models/game/game.module";
